@@ -23,7 +23,7 @@ If the model used is SimCLR, the train_simclr function should be used. This func
 
 ## The classifier:
 There are three built in classifiers at the moment. The k-kmeans and KNN classifier can be used with all models.
-Both classifiers takes the inputs: {Model}, {training dataset}, {test dataset}, {CUDA or CPU} and {number of clusters/neighbours}. The standard number of clusters for k-means is 10, and the standard number of neighbours for KNN is 5.
+Both classifiers takes the inputs: {Model}, {training dataset}, {test dataset}, {CUDA or CPU?} and {number of clusters/neighbours}. The standard number of clusters for k-means is 10, and the standard number of neighbours for KNN is 5.
 
 For SimCLR we also have a weighted KNN classifier, which achieves a bit better results than the ordinary KNN with the SimCLR model. This function take the inputs: {model}, {memory dataset} and {test dataset}
 
