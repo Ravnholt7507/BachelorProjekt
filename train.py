@@ -3,13 +3,14 @@ import torch
 import torch
 from tqdm import tqdm
 
-def train(encoder, decoder, device, dataloader, loss_fn, optimizer):
+def train(encoder, decoder, device, dataloader, loss_fn, optimizer, epoch, epochs):
     # Set train mode for both the encoder and the decoder
     encoder.train()
     decoder.train()
     train_loss = []
+    trainbar = tqdm(dataloader)
     # Iterate the dataloader (we do not need the label values, this is unsupervised learning)
-    for image_batch, _ in dataloader: # with "_" we just ignore the labels (the second element of the dataloader tuple)
+    for image_batch, _ in trainbar: # with "_" we just ignore the labels (the second element of the dataloader tuple)
         # Move tensor to the proper device
         image_batch = image_batch.to(device)
         # Encode data
@@ -24,6 +25,7 @@ def train(encoder, decoder, device, dataloader, loss_fn, optimizer):
         optimizer.step()
         # Print batch loss
         train_loss.append(loss.detach().cpu().numpy())
+        trainbar.set_description(f"Train Epoch: [{epoch}/{epochs}] Loss: {np.mean(train_loss):.4f}")
 
     return np.mean(train_loss)
 

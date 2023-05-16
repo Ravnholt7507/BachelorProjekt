@@ -11,7 +11,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 
-def run_kmeans(loader, testloader, encoder, device, n_clusters=10):
+def run_kmeans(encoder, loader, testloader, device, n_clusters=10):
   
     train_images = []
     train_labels = []
@@ -100,7 +100,7 @@ def infer_data_labels(X_labels, cluster_labels):
                 
     return predicted_labels
 
-def KNN(encoder, loader, testloader, number_of_neighbours, device):
+def KNN(encoder, loader, testloader,  device, number_of_neighbours = 5):
     train_images = []
     train_labels = []
     test_images = []
