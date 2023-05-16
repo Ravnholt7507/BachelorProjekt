@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    train_data, _= simclr_dataloader()
+    train_data, _, _= simclr_dataloader()
     fit_loader, test_loader = normal_loader(batch_size=4)
     model = Model().to(device)
 

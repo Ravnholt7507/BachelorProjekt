@@ -39,7 +39,10 @@ def simclr_dataloader(batch_size = 128):
     test_data = CIFAR10Pair(root='data', train=False, transform=test_transform, download=True)
     test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=False, num_workers=2, pin_memory=True,drop_last=True)
 
-    return train_loader, test_loader
+    memory_data = CIFAR10Pair(root='data', train=True, transform=test_transform, download=True)
+    memory_loader = torch.utils.data.DataLoader(memory_data, batch_size=batch_size, shuffle=False, num_workers=2, pin_memory=True)
+
+    return train_loader, test_loader, memory_loader
 
 def normal_loader(batch_size = 128):
     dataset = CIFAR10(root="./data", train=True, download=True, transform=transforms.ToTensor())
