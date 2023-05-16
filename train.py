@@ -62,6 +62,6 @@ def train_simCLR(net, data_loader, train_optimizer, temperature, batch_size, epo
 
         total_num += batch_size
         total_loss += loss.item() * batch_size
-        train_bar.set_description('Train Epoch: [{}/{}] Loss: {:.4f}'.format(epoch, epochs, total_loss / total_num))
+        train_bar.set_description('Train Epoch: [{}/{}] Loss: {:.4f}'.format(epoch+1, epochs, total_loss / total_num))
 
     return total_loss / total_num
