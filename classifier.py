@@ -100,7 +100,7 @@ def infer_data_labels(X_labels, cluster_labels):
                 
     return predicted_labels
 
-def KNN(encoder, loader, testloader,  device, number_of_neighbours = 5):
+def KNN(encoder, loader, testloader, device, number_of_neighbours = 5):
     train_images = []
     train_labels = []
     test_images = []
@@ -117,10 +117,7 @@ def KNN(encoder, loader, testloader,  device, number_of_neighbours = 5):
     test_labels = torch.cat(test_labels)
 
     clf = KNeighborsClassifier(n_neighbors=number_of_neighbours)
-    train_images = encoder(train_images.to(device))
-    train_images = train_images.cpu().flatten(1).detach().numpy()
-
-    test_images = test_images.to(device)
+    train_images = encoder(train_images).cpu().flatten(1).detach().numpy()
     test_images = encoder(test_images).cpu().flatten(1).detach().numpy()
     
     scaler = MinMaxScaler()

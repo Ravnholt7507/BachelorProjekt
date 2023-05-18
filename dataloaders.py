@@ -51,4 +51,9 @@ def normal_loader(batch_size = 128):
     loader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
     test_loader = torch.utils.data.DataLoader(dataset=test_data, batch_size=batch_size, shuffle=True)
     return loader, test_loader
+
+def get_cifar():
+    test_dataset = CIFAR10(root="./data", train=False, download=True, transform=transforms.ToTensor())
+
+    return test_dataset
     
