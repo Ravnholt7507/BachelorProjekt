@@ -26,6 +26,3 @@ There are three built in classifiers at the moment. The k-kmeans and KNN classif
 Both classifiers takes the inputs: {Model}, {training dataset}, {test dataset}, {CUDA or CPU?} and {number of clusters/neighbours}. The standard number of clusters for k-means is 10, and the standard number of neighbours for KNN is 5.
 
 For SimCLR we also have a weighted KNN classifier, which achieves a bit better results than the ordinary KNN with the SimCLR model. This function take the inputs: {model}, {memory dataset} and {test dataset}
-
-## Explanation of example:
-In the example we use two different dataloader, one called "simclr_dataloader" and another called "normal_loader". We do this because the KNN classifier requires dataloader input of the form [image, label], but the SimCLR_dataloader has the form [image1, image2, target], and is used for training the simCLR model. 
