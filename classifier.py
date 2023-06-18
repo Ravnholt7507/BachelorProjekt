@@ -36,7 +36,7 @@ def run_kmeans(encoder, loader, testloader, device, n_clusters=10):
         print(n_digits)
 
         # Initialize KMeans model
-        kmeansLatent = MiniBatchKMeans(n_clusters = 10)
+        kmeansLatent = MiniBatchKMeans(n_clusters = n_digits)
 
         # Fit the model to the training data
         kmeansLatent.fit(latent.flatten(1).cpu().numpy())
@@ -117,8 +117,8 @@ def KNN(encoder, loader, testloader, device, number_of_neighbours = 5):
     test_labels = torch.cat(test_labels)
 
     clf = KNeighborsClassifier(n_neighbors=number_of_neighbours)
-    train_images = encoder(train_images).cpu().flatten(1).detach().numpy()
-    test_images = encoder(test_images).cpu().flatten(1).detach().numpy()
+    train_images = encoder(train_images.to(device)).cpu().flatten(1).detach().numpy()
+    test_images = encoder(test_images.to(device)).cpu().flatten(1).detach().numpy()
     
     scaler = MinMaxScaler()
     train_images = scaler.fit_transform(train_images)
