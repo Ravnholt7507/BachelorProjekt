@@ -3,16 +3,15 @@ from torch import nn
 class Encoder(nn.Module):
     def __init__(self):
         super().__init__()
-        # Input size: [batch, 3, 32, 32]
-        # Output size: [batch, 3, 32, 32]
+
         self.encoder = nn.Sequential(
-          nn.Conv2d(3, 12, 4, stride=2, padding=1),            # [batch, 12, 16, 16]
+          nn.Linear(32*32*3, 512),
           nn.ReLU(),
-          nn.Conv2d(12, 24, 4, stride=2, padding=1),           # [batch, 24, 8, 8]
-          nn.BatchNorm2d(24),
+          nn.Linear(512, 256),
           nn.ReLU(),
-          nn.Conv2d(24, 48, 4, stride=2, padding=1),           # [batch, 48, 4, 4]
+          nn.Linear(256, 128),
           nn.ReLU(),
+          nn.Linear(128, 48),
         )
 
     def forward(self, x):
@@ -24,13 +23,14 @@ class Decoder(nn.Module):
         super().__init__()
 
         self.decoder = nn.Sequential(
-          nn.ConvTranspose2d(48, 24, 4, stride=2, padding=1),  # [batch, 24, 8, 8]
+          nn.Linear(48, 128),
           nn.ReLU(),
-          nn.ConvTranspose2d(24, 12, 4, stride=2, padding=1),  # [batch, 12, 16, 16]
-          nn.BatchNorm2d(12),
+          nn.Linear(128, 256),
           nn.ReLU(),
-          nn.ConvTranspose2d(12, 3, 4, stride=2, padding=1),   # [batch, 3, 32, 32]
-          nn.Sigmoid(),
+          nn.Linear(256, 512),
+          nn.ReLU(),
+          nn.Linear(512, 32*32*3),
+          nn.Sigmoid()
         )
 
     def forward(self, x):

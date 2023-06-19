@@ -4,30 +4,50 @@ import torch
 from tqdm import tqdm
 
 
-def train_autoencoder(encoder, decoder, device, dataloader, loss_fn, optimizer, epoch, epochs):
+def train_autoencoder(encoder, decoder, device, dataloader, loss_fn, optimizer, epoch, epochs, ae):
     # Set train mode for both the encoder and the decoder
     encoder.train()
     decoder.train()
     train_loss = []
     trainbar = tqdm(dataloader)
-    # Iterate the dataloader (we do not need the label values, this is unsupervised learning)
-    for image_batch, _ in trainbar:
-        # with "_" we just ignore the labels (the second element of the dataloader tuple)
-        # Move tensor to the proper device
-        image_batch = image_batch.to(device)
-        # Encode data
-        encoded_data = encoder(image_batch)
-        # Decode data
-        decoded_data = decoder(encoded_data)
-        # Evaluate loss
-        loss = loss_fn(decoded_data, image_batch)
-        # Backward pass
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-        # Print batch loss
-        train_loss.append(loss.detach().cpu().numpy())
-        trainbar.set_description(f"Train Epoch: [{epoch}/{epochs}] Loss: {np.mean(train_loss):.4f}")
+    if ae == True:
+        for imagebatch, _ in trainbar:
+            for image in imagebatch:
+                image = image.to(device)
+                image = image.reshape(-1, 3*32*32)
+                # Encode data
+                encoded_data = encoder(image)
+                # Decode data
+                decoded_data = decoder(encoded_data)
+                # Evaluate loss
+                loss = loss_fn(decoded_data, image)
+                # Backward pass
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+                # Print batch loss
+                train_loss.append(loss.detach().cpu().numpy())
+                trainbar.set_description(f"Train Epoch: [{epoch}/{epochs}] Loss: {np.mean(train_loss):.4f}")
+    else:
+        # Iterate the dataloader (we do not need the label values, this is unsupervised learning)
+        for image_batch, _ in trainbar:
+            # with "_" we just ignore the labels (the second element of the dataloader tuple)
+            # Move tensor to the proper device
+
+            image_batch = image_batch.to(device)
+            # Encode data
+            encoded_data = encoder(image_batch)
+            # Decode data
+            decoded_data = decoder(encoded_data)
+            # Evaluate loss
+            loss = loss_fn(decoded_data, image_batch)
+            # Backward pass
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            # Print batch loss
+            train_loss.append(loss.detach().cpu().numpy())
+            trainbar.set_description(f"Train Epoch: [{epoch}/{epochs}] Loss: {np.mean(train_loss):.4f}")
 
     return np.mean(train_loss)
 
